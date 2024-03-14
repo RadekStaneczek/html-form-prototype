@@ -58,6 +58,10 @@ body
         position: absolute;
         margin-left: 50px;
     }
+    select
+    {
+        display: block;
+    }
     #header
     {
         background-color: #fff0e9;
