@@ -37,13 +37,13 @@ foreach($keys as $key => $value)
     }
 }
 $sql = $sql.") VALUES (";
-
+$count2 = 0;
 foreach($_POST as $key => $value)
 {
-  echo $key;
-  if(strpos($key,'id') === true)
+  if($count2 == 0)
   {
     $sql = $sql."'NULL'";
+    $count2 += 1;
   }
   else
   {
