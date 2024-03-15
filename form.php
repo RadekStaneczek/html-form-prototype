@@ -1,18 +1,9 @@
 <?php
-
-$servername = "localhost";
-$username = "root";
-$password = "";
-$database = "piekarnia_staneczek";
-
-$table = $_POST["table"];
+include('init.php');
 
 $keys = array_keys($_POST);
 $id = [];
 
-$conn = new mysqli($servername, $username, $password,$database);
-
-$sql_ = "select * from dostawcy";
 if(true)
 {
     $result = $conn->query($sql_);
@@ -22,35 +13,43 @@ if(true)
         $id[$key] = $value;
     }
 }
-$sql = "INSERT INTO".$table."(";
+$sql = "INSERT INTO ".$table."(";
 $count = 0;
 foreach($keys as $key => $value)
 {
-    if($count==0)
+    if($key != 0 && $key != 1 && !str_contains($value,"id"))
     {
-      $sql = $sql."'".$value."'";
-      $count +=1;
+      $sql = $sql.",".$value."";
+    }
+    else if($key == 1)
+    {
+      $sql = $sql.$value;
+    }
+    else if(str_contains($value,"id"))
+    {
+      $sql = $sql;
     }
     else
     {
-      $sql = $sql.",'".$value."'";
+      $sql = $sql;
     }
 }
 $sql = $sql.") VALUES (";
-$count2 = 0;
+
 foreach($_POST as $key => $value)
 {
-  if($count2 == 0)
+  if($count == 0)
   {
-    $sql = $sql."'NULL'";
-    $count2 += 1;
+    $sql = $sql."'".$value."'";
+    $count += 1;
   }
   else
   {
     $sql = $sql.",'".$value."'";
   }
 }
-$sql = $sql.");";
+$sql = $sql.")";
+print_r($sql);
 // Check connection
 if ($conn->connect_error) 
 {

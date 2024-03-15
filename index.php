@@ -19,21 +19,18 @@
 
                 <form action="form.php" method="POST">
 
-                    <?php include 'init.php';
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $database = "piekarnia_staneczek";
-                    
-                        $conn = new mysqli($servername, $username, $password,$database);
-                        $sql = "select * from dostawcy";
+                    <?php 
+                    include('init.php');
                         if(true)
                         {
-                            $result = $conn->query($sql);
+                            $result = $conn->query($sql_);
                             $keys = array_keys($result -> fetch_assoc());
                             foreach($keys as $key => $value)
                             {
-                                echo "<label for='$value'>$value</label><br> <input type='text' name='$value'>";
+                                if(!str_contains($value,"id"))
+                                {
+                                    echo "<label for='$value'>$value</label><br> <input type='text' name='$value'>";
+                                }
                             }
                         }
                     ?>
@@ -47,13 +44,8 @@
             <div id="tables">
                 <table>
                       <?php
-                        $servername = "localhost";
-                        $username = "root";
-                        $password = "";
-                        $database = "piekarnia_staneczek";
-        
-                        $conn = new mysqli($servername, $username, $password,$database);
-                        $tables = ["pracownicy","dostawcy","produkty","sklepy","wlasciciele","wydatki"];
+                        include("init.php");
+                        
                         if ($conn->connect_error) {
                           die("Connection failed: " . $conn->connect_error);
                         }
