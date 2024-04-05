@@ -8,6 +8,7 @@
         private $tables = [];
 
         private $conn;
+        
         function __construct($server,$username,$password,$database,$tables)
         {
             $this->server = $server;
@@ -22,16 +23,25 @@
                 die("Connection failed: " . $this->conn->connect_error);
             }
         }
+
         function DisplayTables($addSQL = "",$table ="")
         {
-            for($i=0;$i<count($this->tables);$i++)
+            $tab =[];
+            if($table != "")
             {
-                $sql = "select * from ".$this->tables[$i]." ".$addSQL;
+                $tab[0] = $table;
+            }
+            else
+            {
+                $tab = $this->tables;
+            }
+            for($i=0;$i<count($tab);$i++)
+            {
+                $sql = "select * from ".$tab[$i]." ".$addSQL;
                 $result = $this->conn->query($sql);
                 $result2 = $this->conn->query($sql) ->fetch_assoc();
-
+                
                 echo "<table><tr>";
-
                 foreach ($result2 as $key => $value) 
                 {
                     echo "<th>".$key."</th>";
@@ -50,14 +60,21 @@
                 echo "</table>";
             }       
         }
+
         function generateForm()
         {
-                
+
         }
+
         function close()
         {
             $this->conn->close();
             echo "connection closed";
+        }
+        function open()
+        {
+            $this->conn = new mysqli($this->server, $this->username, $this->password, $this->database);
+            echo "connection created";
         }
         
     }
