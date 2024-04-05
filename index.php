@@ -44,7 +44,10 @@
             <div id="tables">
                 <table>
                       <?php
-                        include("form_generator.php");
+                        include 'database.php';
+                        $db = new Database("localhost","root","","szkola",["klasa","uczen","wychowawca"]);
+
+                        $db->DisplayTables();
                       ?>
                 </table>
             </div>

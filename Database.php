@@ -22,7 +22,7 @@
                 die("Connection failed: " . $this->conn->connect_error);
             }
         }
-        function DisplayTables($addSQL = "",$table ="")
+        function DisplayTables($addSQL)
         {
             for($i=0;$i<count($this->tables);$i++)
             {
@@ -52,7 +52,7 @@
         }
         function generateForm()
         {
-                
+
         }
         function close()
         {

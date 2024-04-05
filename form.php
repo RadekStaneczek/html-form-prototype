@@ -49,28 +49,4 @@ foreach($_POST as $key => $value)
   }
 }
 $sql = $sql.")";
-print_r($sql);
-// Check connection
-if ($conn->connect_error) 
-{
-  die("Connection failed: " . $conn->connect_error);
-}
-else
-{
-  echo "Connected successfully";
-}
-if(true)
-{
-  if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
-  } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-  }
-}
-else
-{
-  echo "brak";
-}
-
-$conn ->close();
 ?>
