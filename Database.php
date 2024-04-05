@@ -1,10 +1,10 @@
 <?php 
     class Database
     {
-        private $server;
-        private $username;
-        private $password;
-        private $database;
+        private $server = "localhost";
+        private $username = "root";
+        private $password = "";
+        private $database = "";
         private $tables = [];
 
         private $conn;
@@ -22,9 +22,42 @@
                 die("Connection failed: " . $this->conn->connect_error);
             }
         }
-        function DisplayTables()
+        function DisplayTables($addSQL = "",$table ="")
         {
+            for($i=0;$i<count($this->tables);$i++)
+            {
+                $sql = "select * from ".$this->tables[$i]." ".$addSQL;
+                $result = $this->conn->query($sql);
+                $result2 = $this->conn->query($sql) ->fetch_assoc();
 
+                echo "<table><tr>";
+
+                foreach ($result2 as $key => $value) 
+                {
+                    echo "<th>".$key."</th>";
+                }
+
+                echo "</tr>";
+                while($row = $result->fetch_array(MYSQLI_NUM))
+                {   
+                    echo "<tr>";
+                    for($j=0;$j < count($row);$j++)
+                    {
+                        echo "<td>".$row[$j]."</td>";
+                    }
+                    echo "</tr>";
+                }
+                echo "</table>";
+            }       
+        }
+        function generateForm()
+        {
+                
+        }
+        function close()
+        {
+            $this->conn->close();
+            echo "connection closed";
         }
         
     }
