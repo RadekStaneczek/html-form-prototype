@@ -17,9 +17,14 @@
             $this->tables = $tables;
 
             $this->conn = new mysqli($this->server, $this->username, $this->password, $this->database);
+            if ($this->conn->connect_error) 
+            {
+                die("Connection failed: " . $this->conn->connect_error);
+            }
         }
         function DisplayTables()
         {
+
         }
         
     }
