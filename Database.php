@@ -39,10 +39,10 @@
             {
                 $sql = "select * from ".$tab[$i]." ".$addSQL;
                 $result = $this->conn->query($sql);
-                $result2 = $this->conn->query($sql) ->fetch_assoc();
+                $column = $this->conn->query($sql) ->fetch_assoc();
                 
                 echo "<table><tr>";
-                foreach ($result2 as $key => $value) 
+                foreach ($column as $key => $value) 
                 {
                     echo "<th>".$key."</th>";
                 }
@@ -63,13 +63,17 @@
 
         function generateForm($table)
         {
-            $sql = "select * from ".$table;
+            $sql = "DESCRIBE ".$table;
             $result = $this->conn->query($sql);
-            $keys = array_keys($result -> fetch_assoc());
+            $keys=[];
+            while($row = $result->fetch_assoc())
+            {
+                $keys[] = $row['Field'];
+            }
             echo "<form action='form.php' method='POST'>";
             foreach($keys as $key => $value)
             {
-                if(!str_contains($value,"id"))
+                if(!strpos($value,"id"))
                 {
                     echo "<label for='$value'>$value</label><br><input type='text' name='$value'><br>";
                 }
@@ -77,9 +81,34 @@
             echo "<input type='submit' value='submit'></form>";
         }
 
-        static function makeCustomSql()
+        function makeCustomSql($table)
         {
-
+            
+            $info = "DESCRIBE ".$table;
+            $content = $this->conn->query($info);
+            $values=[];
+            $columns=[];
+            $sql = ["INSERT INTO ",$table," (",")","VALUES","(",");"];
+            while($row = $content->fetch_assoc())
+            {
+                $columns[] =  $row['Field'];
+            }
+            for($i=0; $i<count($columns);$i++)
+            {
+                if($i == 0)
+                {
+                    $sql[2] = $sql[2].$columns[$i];
+                }
+                else
+                {
+                    $sql[2] = $sql[2].",".$columns[$i];
+                }
+            }
+            foreach($_POST as $key => $value)
+            {
+                $sql = $sql."'".$value."'";
+            }
+            echo $sql;
         }
         
         function close()

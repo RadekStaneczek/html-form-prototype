@@ -5,7 +5,6 @@ $password = "";
 $database = "baza2p";
 
 $table = "uzytkownik";
-$tables=["wyniki","zdjecia","matematycy"];
 
 $conn = new mysqli($servername, $username, $password,$database);
 $sql_ = "select * from ".$table;
@@ -27,7 +26,7 @@ $sql = "INSERT INTO ".$table."(";
 $count = 0;
 foreach($keys as $key => $value)
 {
-    if($key != 0 && $key != 1 && !str_contains($value,"id"))
+    if($key != 0 && $key != 1 && !strpos($value,"id"))
     {
       $sql = $sql.",".$value."";
     }
@@ -35,11 +34,11 @@ foreach($keys as $key => $value)
     {
       $sql = $sql.$value;
     }
-    else if(str_contains($value,"id"))
+    else if($key == 0)
     {
-      $sql = $sql;
+      $sql = $sql.$value.",";
     }
-    else
+    else 
     {
       $sql = $sql;
     }
@@ -60,7 +59,7 @@ foreach($_POST as $key => $value)
 }
 $sql = $sql.")";
 print_r($sql);
-// Check connection
+
 if ($conn->connect_error) 
 {
   die("Connection failed: " . $conn->connect_error);
@@ -68,18 +67,6 @@ if ($conn->connect_error)
 else
 {
   echo "Connected successfully";
-}
-if(true)
-{
-  if ($conn->query($sql) === TRUE) {
-    echo "New record created successfully";
-  } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
-  }
-}
-else
-{
-  echo "brak";
 }
 
 $conn ->close();
