@@ -20,11 +20,11 @@
             $this->conn = new mysqli($this->server, $this->username, $this->password, $this->database);
             if ($this->conn->connect_error) 
             {
-                die("Connection failed: " . $this->conn->connect_error);
+                die("Connection failed: ".$this->conn->connect_error);
             }
         }
 
-        function DisplayTables($addSQL = "",$table ="")
+        function DisplayTables($table ="",$addSQL = "")
         {
             $tab =[];
             if($table != "")
@@ -61,16 +61,33 @@
             }       
         }
 
-        function generateForm()
+        function generateForm($table)
+        {
+            $sql = "select * from ".$table;
+            $result = $this->conn->query($sql);
+            $keys = array_keys($result -> fetch_assoc());
+            echo "<form action='form.php' method='POST'>";
+            foreach($keys as $key => $value)
+            {
+                if(!str_contains($value,"id"))
+                {
+                    echo "<label for='$value'>$value</label><br><input type='text' name='$value'><br>";
+                }
+            }
+            echo "<input type='submit' value='submit'></form>";
+        }
+
+        static function makeCustomSql()
         {
 
         }
-
+        
         function close()
         {
             $this->conn->close();
             echo "connection closed";
         }
+
         function open()
         {
             $this->conn = new mysqli($this->server, $this->username, $this->password, $this->database);
